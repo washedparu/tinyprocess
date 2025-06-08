@@ -5,8 +5,11 @@
 #include <dirent.h>
 #include <linux/prctl.h>
 #include <unistd.h>
+#include <signal.h>
+
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 
@@ -41,5 +44,8 @@ typedef enum {
 
 
 int is_number(const char *str);
+
+
+
 PROC_T list_proc(base_t* b);
 void cli_help();
