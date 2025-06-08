@@ -12,7 +12,7 @@ int is_number(const char *str) {
 
 
 
-// Kill processes
+
 PROC_T kill_by_comm(const char *target_name) {
     DIR *proc = opendir("/proc");
     if (!proc) {
@@ -54,7 +54,7 @@ PROC_T kill_by_comm(const char *target_name) {
 }
 
 
-// List processes
+
 PROC_T list_proc(base_t* b) {
     b->cmdline_file = NULL;
     b->proc_dir = opendir("/proc");

@@ -45,7 +45,11 @@ typedef enum {
 
 int is_number(const char *str);
 
+// Kill processes
+PROC_T kill_by_comm(const char *target_name);
 
-
+// Kill processes
 PROC_T list_proc(base_t* b);
+
+// '---help'
 void cli_help();
