@@ -1,2 +1,3 @@
-# Excluding the bin directory
+# Bin and .vscode directories
 bin/
+.vscode/
