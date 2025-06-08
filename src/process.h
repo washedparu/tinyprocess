@@ -40,12 +40,6 @@ typedef enum {
 } PROC_T;
 
 
-
-
 int is_number(const char *str);
-
-
-
 PROC_T list_proc(base_t* b);
-
 void cli_help();
