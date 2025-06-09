@@ -13,7 +13,7 @@ int is_number(const char *str) {
 
 
 
-PROC_T kill_by_comm(const char *target_name) {
+PROC_T kill_by_comm(const char *target_name, bool_t force) {
     DIR *proc = opendir("/proc");
     if (!proc) {
         perror("opendir /proc");
@@ -37,10 +37,23 @@ PROC_T kill_by_comm(const char *target_name) {
 
             if (strcmp(comm, target_name) == 0) {
                 pid_t pid = atoi(entry->d_name);
-                if (kill(pid, SIGKILL) == 0) {
-                    printf("Killed %s (PID: %d)\n", comm, pid);
-                } else {
-                    perror("kill");
+
+                if (!force) {
+                    if (kill(pid, SIGTERM) == 0) {
+                        printf("Killed %s (PID: %d)\n", comm, pid);
+                    } 
+                    else {
+                        printf("(%s) There is no such a process\n", comm);
+                    }
+                }
+
+                else {
+                    if (kill(pid, SIGTERM) == 0) {
+                        printf("Killed %s (PID: %d)\n", comm, pid);
+                    } 
+                    else {
+                        printf("(%s) There is no such a process\n", comm);
+                    }
                 }
             }
         }

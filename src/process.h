@@ -42,11 +42,16 @@ typedef enum {
     FAILED,  
 } PROC_T;
 
+typedef enum {
+    FALSE,
+    TRUE
+} bool_t;
+
 
 int is_number(const char *str);
 
 // Kill processes
-PROC_T kill_by_comm(const char *target_name);
+PROC_T kill_by_comm(const char *target_name, bool_t force);
 
 // Kill processes
 PROC_T list_proc(base_t* b);
