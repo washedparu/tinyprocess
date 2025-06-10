@@ -1,3 +1,3 @@
-# Bin and .vscode directories
-bin/
-.vscode
+# build and .vscode directories
+.vscode/
+build/

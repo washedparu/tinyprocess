@@ -1,7 +1,7 @@
-#include "process.h"
+#include "tp_core.h"
+#include "tp_logger.h"
 
-
-int is_number(const char *str) {
+int tp_is_number(const char *str) {
     while (*str) {
         if (!isdigit(*str)) return 0;
         str++;
@@ -13,24 +13,24 @@ int is_number(const char *str) {
 
 
 
-PROC_T kill_by_comm(const char *target_name, bool_t force) {
+PROC_T tp_kill_by_comm(const char *target_name, bool_t force) {
     DIR *proc = opendir("/proc");
     if (!proc) {
-        perror("opendir /proc");
+        TP_ERROR("opendir /proc");
         return FAILED;
     }
     
     struct dirent *entry;
     while ((entry = readdir(proc)) != NULL) {
-        if (!is_number(entry->d_name)) continue;
+        if (!tp_is_number(entry->d_name)) continue;
 
-        char comm_path[256];
+        char comm_path[MAX_PATH];
         snprintf(comm_path, sizeof(comm_path), "/proc/%s/comm", entry->d_name);
 
         FILE *f = fopen(comm_path, "r");
         if (!f) continue;
 
-        char comm[256];
+        char comm[MAX_PATH];
         if (fgets(comm, sizeof(comm), f)) {
     
             comm[strcspn(comm, "\n")] = 0;
@@ -68,19 +68,19 @@ PROC_T kill_by_comm(const char *target_name, bool_t force) {
 
 
 
-PROC_T list_proc(base_t* b) {
+PROC_T tp_list_proc(base_t* b) {
     b->cmdline_file = NULL;
     b->proc_dir = opendir("/proc");
 
     if (!b->proc_dir) {
-        perror("Couldn't open /proc");
+        TP_ERROR("Couldn't open /proc");
         return FAILED;
     }
 
     struct dirent *entry;
 
     while ((entry = readdir(b->proc_dir)) != NULL) {
-        if (entry->d_type == DT_DIR && is_number(entry->d_name)) {
+        if (entry->d_type == DT_DIR && tp_is_number(entry->d_name)) {
 
             snprintf(b->cmdline_path, sizeof(b->cmdline_path), "/proc/%s/cmdline", entry->d_name);
             snprintf(b->program_name_path, sizeof(b->program_name_path), "/proc/%s/comm", entry->d_name);
@@ -103,7 +103,7 @@ PROC_T list_proc(base_t* b) {
                     b->program_name_path[len - 1] = '\0';
                 }
 
-                printf(BOLD GREEN "\nPID: " RESET "%s   "
+                TP_INFO(BOLD GREEN "\nPID: " RESET "%s   "
                        BOLD RED "Command:   " RESET "%s\n"
                        BOLD CYAN "Program: " RESET "%s\n",
                        entry->d_name, b->cmdline, b->program_name_path);
@@ -118,7 +118,7 @@ PROC_T list_proc(base_t* b) {
     return SUCCESS;
 } 
 
-void cli_help() {
+void tp_cli_help() {
     printf("(C) 2025 Process. All rights reserved.\n\nUsage: process [FLAGS] [ARGS]\n\nFLAGS:\n"
     "\t--help | -h | --h shows this message\n"
     "\t--list | -l       list all processes\n"

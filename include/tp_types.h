@@ -1,18 +1,10 @@
 #pragma once
 
-
-#define _GNU_SOURCE
-#include <dirent.h>
-#include <linux/prctl.h>
-#include <unistd.h>
-#include <signal.h>
-
-
+// includes for base struct
 #include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
+#include <dirent.h>
 
+// colors in ASCII format
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
 #define GREEN   "\033[32m"
@@ -25,6 +17,7 @@
 
 #define MAX_PATH 256
 
+// base struct 
 typedef struct {
     char cmdline_path[MAX_PATH];
     char cmdline[MAX_PATH];
@@ -37,6 +30,7 @@ typedef struct {
 } base_t;
 
 
+// return types
 typedef enum {
     SUCCESS,
     FAILED,  
@@ -46,15 +40,3 @@ typedef enum {
     FALSE,
     TRUE
 } bool_t;
-
-
-int is_number(const char *str);
-
-// Kill processes
-PROC_T kill_by_comm(const char *target_name, bool_t force);
-
-// Kill processes
-PROC_T list_proc(base_t* b);
-
-// '---help'
-void cli_help();
