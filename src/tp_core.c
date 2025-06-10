@@ -103,7 +103,7 @@ PROC_T tp_list_proc(base_t* b) {
                     b->program_name_path[len - 1] = '\0';
                 }
 
-                TP_INFO(BOLD GREEN "\nPID: " RESET "%s   "
+                printf(BOLD GREEN "\nPID: " RESET "%s   "
                        BOLD RED "Command:   " RESET "%s\n"
                        BOLD CYAN "Program: " RESET "%s\n",
                        entry->d_name, b->cmdline, b->program_name_path);
