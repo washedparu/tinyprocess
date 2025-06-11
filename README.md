@@ -2,7 +2,7 @@
 
 ### for help:
 ```
-tprocess -h
+tinyprocess -h
 ```
 
 # Bulding/Installing
