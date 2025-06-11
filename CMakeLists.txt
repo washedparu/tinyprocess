@@ -7,7 +7,7 @@ endif()
 
 
 # define project
-project(tprocess VERSION 0.0.1 LANGUAGES C)
+project(tinyprocess VERSION 0.0.1 LANGUAGES C)
 
 # set C standard
 set(CMAKE_C_STANDARD 17)
@@ -22,7 +22,7 @@ set(SOURCES
 )
 
 # create executable
-add_executable(tprocess ${SOURCES})
+add_executable(tinyprocess ${SOURCES})
 
 # include directories
-target_include_directories(tprocess PRIVATE include)
+target_include_directories(tinyprocess PRIVATE include)

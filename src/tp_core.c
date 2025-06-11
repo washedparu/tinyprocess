@@ -119,11 +119,12 @@ PROC_T tp_list_proc(base_t* b) {
 } 
 
 void tp_cli_help() {
-    printf("(C) 2025 Process. All rights reserved.\n\nUsage: process [FLAGS] [ARGS]\n\nFLAGS:\n"
-    "\t--help | -h | --h shows this message\n"
-    "\t--list | -l       list all processes\n"
-    "\t--kill-by-program-name | -kn kill a process by name\n"
-    "\t--kill-by-pid | -kp kills a process by pid.\n"
+    printf("© 2025 TinyProcess.\n\nUsage: process [FLAGS] [ARGS]\n\nFLAGS:\n"
+    "\t--help | -h | --h            shows this message\n"
+    "\t--list | -l                  list all processes\n"
+    "\t--kill-by-program-name |     -kn kill a process by name\n"
+    "\t--kill-by-pid | -kp          kills a process by pid.\n"
+    "\t--sig-kill | -sg             forces a process to close(SIGKILL)\n"
     "\t(ARGS are user arguments).\n\te.g: -kp [pid] (pid is an argument)\n"
 );
     
