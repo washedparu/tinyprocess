@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
             if (tp_list_proc(&b) == FAILED) return 1;
         } 
         else if (!strcmp(argv[i], "--help") || !strcmp(argv[i], "-h")) {
-            tp_cli_help();
+            tp_show_help();
         } 
         else if (!strcmp(argv[i], "--kill-by-program-name") || !strcmp(argv[i], "-kn")) {
             bool_t force = FALSE;
