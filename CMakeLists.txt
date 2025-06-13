@@ -7,7 +7,7 @@ endif()
 
 
 # define project
-project(tinyprocess VERSION 0.0.1 LANGUAGES C)
+project(tinyprocess VERSION 0.0.2 LANGUAGES C)
 
 # set C standard
 set(CMAKE_C_STANDARD 17)
