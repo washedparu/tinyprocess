@@ -21,4 +21,4 @@ PROC_T tp_kill_by_comm(const char *target_name, bool_t force);
 PROC_T tp_list_proc(base_t* b);
 
 // '---help'
-void tp_cli_help();
+void show_help();
