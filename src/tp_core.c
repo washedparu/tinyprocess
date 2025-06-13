@@ -118,7 +118,7 @@ PROC_T tp_list_proc(base_t* b) {
     return SUCCESS;
 } 
 
-void tp_cli_help() {
+void tp_show_help() {
     printf("© 2025 TinyProcess.\n\nUsage: process [FLAGS] [ARGS]\n\nFLAGS:\n"
     "\t--help | -h | --h            shows this message\n"
     "\t--list | -l                  list all processes\n"
