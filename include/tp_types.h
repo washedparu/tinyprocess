@@ -3,6 +3,8 @@
 // includes for base struct
 #include <stdio.h>
 #include <dirent.h>
+#include <stdbool.h>
+
 
 // colors in ASCII format
 #define RESET   "\033[0m"
@@ -36,7 +38,3 @@ typedef enum {
     FAILED,  
 } PROC_T;
 
-typedef enum {
-    FALSE,
-    TRUE
-} bool_t;

@@ -17,10 +17,10 @@ int main(int argc, char **argv) {
             tp_show_help();
         } 
         else if (!strcmp(argv[i], "--kill-by-program-name") || !strcmp(argv[i], "-kn")) {
-            bool_t force = FALSE;
+            bool force = false;
             
             if (i + 2 < argc && (!strcmp(argv[i + 2], "--sig-kill") || !strcmp(argv[i + 2], "-sg"))) {
-                force = TRUE;
+                force = true;
             }
 
             if (i + 1 < argc) {
@@ -32,10 +32,10 @@ int main(int argc, char **argv) {
             }
         } 
         else if (!strcmp(argv[i], "--kill-by-pid") || !strcmp(argv[i], "-kp")) {
-            bool_t force = FALSE;
+            bool force = false;
             
             if (i + 2 < argc && (!strcmp(argv[i + 2], "--sig-kill") || !strcmp(argv[i + 2], "-sg"))) {
-                force = TRUE;
+                force = true;
             }
 
             if (i + 1 < argc) {

@@ -13,7 +13,7 @@ int tp_is_number(const char *str) {
 
 
 
-PROC_T tp_kill_by_comm(const char *target_name, bool_t force) {
+PROC_T tp_kill_by_comm(const char *target_name, bool force) {
     DIR *proc = opendir("/proc");
     if (!proc) {
         TP_ERROR("opendir /proc");
@@ -42,6 +42,7 @@ PROC_T tp_kill_by_comm(const char *target_name, bool_t force) {
                     if (kill(pid, SIGTERM) == 0) {
                         printf("Killed %s (PID: %d)\n", comm, pid);
                     } 
+
                     else {
                         printf("(%s) There is no such a process\n", comm);
                     }
@@ -51,12 +52,14 @@ PROC_T tp_kill_by_comm(const char *target_name, bool_t force) {
                     if (kill(pid, SIGTERM) == 0) {
                         printf("Killed %s (PID: %d)\n", comm, pid);
                     } 
+
                     else {
                         printf("(%s) There is no such a process\n", comm);
                     }
                 }
             }
         }
+        
         else {
             printf("Couldn't" RED "kill %s\n", target_name);
         }
