@@ -11,73 +11,60 @@ int tp_is_number(const char *str) {
 
 
 
-
-
-PROC_T tp_kill_by_comm(const char *target_name, bool force) {
+// kills a process by name returns 0 for failure 1 for success
+bool tp_kill_by_comm(const char *target_name, bool force) {
     DIR *proc = opendir("/proc");
     if (!proc) {
         TP_ERROR("opendir /proc");
-        return FAILED;
+        return false;
     }
     
     struct dirent *entry;
+    int sig = force ? SIGKILL : SIGTERM;
+
     while ((entry = readdir(proc)) != NULL) {
         if (!tp_is_number(entry->d_name)) continue;
 
-        char comm_path[MAX_PATH];
+        char comm_path[PATH_MAX];
         snprintf(comm_path, sizeof(comm_path), "/proc/%s/comm", entry->d_name);
 
         FILE *f = fopen(comm_path, "r");
         if (!f) continue;
 
-        char comm[MAX_PATH];
+        char comm[256];
         if (fgets(comm, sizeof(comm), f)) {
-    
-            comm[strcspn(comm, "\n")] = 0;
+            comm[strcspn(comm, "\n")] = 0; // remove newline
 
             if (strcmp(comm, target_name) == 0) {
                 pid_t pid = atoi(entry->d_name);
 
-                if (!force) {
-                    if (kill(pid, SIGTERM) == 0) {
-                        printf("Killed %s (PID: %d)\n", comm, pid);
-                    } 
-
-                    else {
-                        printf("(%s) There is no such a process\n", comm);
-                    }
-                }
-
-                else {
-                    if (kill(pid, SIGTERM) == 0) {
-                        printf("Killed %s (PID: %d)\n", comm, pid);
-                    } 
-
-                    else {
-                        printf("(%s) There is no such a process\n", comm);
-                    }
+                if (kill(pid, sig) == 0) {
+                    printf("Killed %s (PID: %d) with signal %d\n", comm, pid, sig);
+                } else {
+                    printf("Failed to kill %s (PID: %d): %s\n", comm, pid, strerror(errno));
                 }
             }
+        } else {
+            TP_ERROR("Failed to read comm for PID %s\n", entry->d_name);
         }
-        
-        else {
-            printf("Couldn't" RED "kill %s\n", target_name);
-        }
+
         fclose(f);
     }
 
     closedir(proc);
+    return true;
 }
 
 
 
-PROC_T tp_list_proc(base_t* b) {
+// list processes returns 0 for failure 1 for success
+bool tp_list_proc(base_t* b) {
     b->cmdline_file = NULL;
     b->proc_dir = opendir("/proc");
 
     if (!b->proc_dir) {
         TP_ERROR("Couldn't open /proc");
-        return FAILED;
+        return false;
     }
 
     struct dirent *entry;
@@ -118,9 +105,10 @@ PROC_T tp_list_proc(base_t* b) {
     
     closedir(b->proc_dir);
     
-    return SUCCESS;
+    return true;
 } 
 
+// prints help
 void tp_show_help() {
     printf("© 2025 TinyProcess.\n\nUsage: process [FLAGS] [ARGS]\n\nFLAGS:\n"
     "\t--help | -h | --h            shows this message\n"
@@ -129,6 +117,41 @@ void tp_show_help() {
     "\t--kill-by-pid | -kp          kills a process by pid.\n"
     "\t--sig-kill | -sg             forces a process to close(SIGKILL)\n"
     "\t(ARGS are user arguments).\n\te.g: -kp [pid] (pid is an argument)\n"
-);
+    );
     
-}   
+} 
+
+// kills pids from argv returns 0 on failure 1 on success
+bool kill_pids_from_argv(char **argv, int start, int argc, int sig) {
+    int valid_pid = 0;
+
+    for (int i = start; i < argc; i++) {
+        char *endptr = NULL;
+        pid_t pid = (pid_t) strtol(argv[i], &endptr, 10);
+
+        if (endptr == argv[i] || *endptr != '\0') {
+            TP_ERROR("Invalid PID: %s\n", argv[i]);
+            continue;
+        }
+
+        valid_pid++;
+
+        // both if and else are called
+       int ret = kill(pid, sig);
+       printf("kill returned: %d\n", ret);
+       if (ret == 0) {
+           TP_INFO("Killed PID %d with signal %d\n", pid, sig);
+       } else {
+           TP_ERROR("Failed to send signal %d to PID %d", sig, pid);
+       }
+
+    }
+
+    if (valid_pid == 0) {
+        TP_ERROR("No valid PIDs provided.\n");
+        return false;
+    }
+
+    return true;
+}
+

@@ -6,6 +6,8 @@
 #include <linux/prctl.h>
 #include <unistd.h>
 #include <signal.h>
+#include <errno.h>
+
 
 #include <stdlib.h>
 #include <ctype.h>
@@ -15,10 +17,14 @@ int tp_is_number(const char *str);
 
 // kill processes
 // TODO: add signals instead of a forcing(-9) bool
-PROC_T tp_kill_by_comm(const char *target_name, bool force);
+bool tp_kill_by_comm(const char *target_name, bool force);
+
 
 // list processes
-PROC_T tp_list_proc(base_t* b);
+bool tp_list_proc(base_t* b);
 
 // '---help'
 void tp_show_help();
+
+// kills pids from argv returns 0 on failure 1 on success
+bool kill_pids_from_argv(char **argv, int start, int argc, int sig);
