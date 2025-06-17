@@ -2,7 +2,7 @@
 #include "tp_logger.h"
 
 int main(int argc, char *argv[]) {
-    base_t b;
+    base_t *b = (base_t*)malloc(sizeof(base_t));
 
     if (argc == 1) {
         printf("'--help' or '-h' for help.\n");
@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
 
     for (int i = 1; i < argc; i++) {
         if (!strcmp(argv[i], "--list") || !strcmp(argv[i], "-l")) {
-            if (!tp_list_proc(&b)) return 1;
+            if (!tp_list_proc(b)) return 1;
         } 
         
         else if (!strcmp(argv[i], "--help") || !strcmp(argv[i], "-h")) {
@@ -75,5 +75,6 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    delete b;
     return 0;
 }
